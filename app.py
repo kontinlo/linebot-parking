@@ -1,13 +1,14 @@
 from flask import Flask, request, abort
-from linebot import LineBotApi, WebhookHandler
-from linebot.exceptions import InvalidSignatureError
-from linebot.models import MessageEvent, TextMessage, TextSendMessage
+from linebot.v3 import WebhookHandler
+from linebot.v3.messaging import MessagingApi, TextMessage
+from linebot.v3.exceptions import InvalidSignatureError
+from linebot.v3.models.events import MessageEvent
 import requests
 
 app = Flask(__name__)
 
 # 設置你的 Line Bot Channel Access Token 和 Channel Secret
-line_bot_api = LineBotApi('dGiRbQmLqhancFNwH71ahUwmjPzSKpjYrfo6vUsGKqhpj6LGpn6QQHxGvzxIjsu3k0d6FH0t+KV5wxzgWELVl2YqOsblF1w0BiPRek8dQ+QQaCXFRCuesCurwO4SsmN3Y6wGWsP3Y2lFcjGDsuSEQwdB04t89/1O/w1cDnyilFU=')
+line_bot_api = MessagingApi('dGiRbQmLqhancFNwH71ahUwmjPzSKpjYrfo6vUsGKqhpj6LGpn6QQHxGvzxIjsu3k0d6FH0t+KV5wxzgWELVl2YqOsblF1w0BiPRek8dQ+QQaCXFRCuesCurwO4SsmN3Y6wGWsP3Y2lFcjGDsuSEQwdB04t89/1O/w1cDnyilFU=')
 handler = WebhookHandler('d14eeeda7ed631c0564e644a29060cf0')
 
 @app.route("/callback", methods=['POST'])
@@ -45,7 +46,7 @@ def handle_message(event):
 
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=reply_text)
+        TextMessage(text=reply_text)
     )
 
 if __name__ == "__main__":
