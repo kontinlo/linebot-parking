@@ -4,6 +4,7 @@ from linebot.v3.messaging import MessagingApi, TextMessage
 from linebot.v3.exceptions import InvalidSignatureError
 from linebot.v3.models.events import MessageEvent
 import requests
+from werkzeug.urls import quote
 
 app = Flask(__name__)
 
@@ -33,7 +34,7 @@ def handle_message(event):
     user_message = event.message.text
 
     # 使用 Nominatim API 查詢附近停車場
-    response = requests.get(f'https://nominatim.openstreetmap.org/search?q={user_message}+parking&format=json&limit=1')
+    response = requests.get(f'https://nominatim.openstreetmap.org/search?q={quote(user_message)}+parking&format=json&limit=1')
     result = response.json()
     if result:
         parking_location = result[0]
